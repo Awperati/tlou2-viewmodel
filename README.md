@@ -10,7 +10,7 @@ hands sit in front of the camera, like in a first-person shooter.
   about 65° either side of where her body faces. The edge is soft, and the lock eases in and out.
 - Nothing in the game folder is changed. Everything loads from its own folder into the running game.
 
-This is version 0.1.0, an early release. See the known issues below.
+This is version 1.0.0.
 
 ## Requirements
 
@@ -43,6 +43,8 @@ This is version 0.1.0, an early release. See the known issues below.
 | `arms <fov> <s>` | Turn the viewmodel on: arms and gun drawn as if seen with a `<fov>`° field of view, at `<s>` times their real distance (default `arms 60 0.75`) |
 | `hold <right> <up> <forward>` | Where the arms and gun sit, in metres. Negative `right` moves them to the right (default `hold -0.09 0.04 0.3`) |
 | `weapon on` / `weapon off` | Whether the held gun follows the arms |
+| `sling on` / `sling off` | Whether parts locked to the gun (the rifle sling) follow it |
+| `anchor on` / `anchor off` | Experimental: carry the arms with the camera as they sit against her chest (default off) |
 | `armroot clavicle` / `armroot shoulder` | Where the moved arm starts |
 | `off` | Turn the viewmodel off |
 | `headlock <degrees>` | Head-turn limit during vaults and climbs (default 65; `0` = off) |
@@ -51,18 +53,18 @@ This is version 0.1.0, an early release. See the known issues below.
 
 ## Known issues
 
-- The rifle sling does not line up with the moved rifle. It is a separate object that is not moved yet.
 - When you look far up or down, the gun follows the game's third-person aim pose, which pitches less than the
   camera, so it can point slightly off.
 - Depth of Field must be off in the Graphics settings (see above).
 - Load order matters: this mod must load after the first-person mod. `Launch.cmd` does that.
 - Only the local player is changed.
+- One game crash was seen during development, with several test builds loaded into the same game at once. It has not been reproduced since.
 
 ## How it works
 
 The game skins every character on the GPU from one 3x4 matrix per joint. The mod changes the render copy
 of those matrices for Ellie's arms (both clavicles and everything below them, including the procedural
-helper joints) and for the weapon in her hands. Her real pose, position and collision stay untouched.
+helper joints), for the weapon in her hands, and for objects locked to it such as the rifle sling. Her real pose, position and collision stay untouched.
 
 The change scales the arms and gun about the eye: by `k * s` across the view and by `s` along it. Seen from
 the eye, that looks like a different field of view (`k = tan(world fov / 2) / tan(viewmodel fov / 2)`) at
